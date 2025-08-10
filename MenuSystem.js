@@ -8,7 +8,7 @@ export default class MenuSystem {
    * @param {number} [config.y=50]
    * @param {number} [config.width=300]
    * @param {number} [config.itemHeight=40]
-   * @param {number} [config.contentIndent=10]
+   * @param {number} [config.contentIndent=20]
    * @param {number} [config.verticalPadding=5]
    */
   constructor(scene, config = {}) {
