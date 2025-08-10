@@ -1,4 +1,5 @@
-import MenuSystem from './MenuSystem.js';
+//import MenuSystem from './MenuSystem.js';
+import MenuSystem from './MenuSystem_2.js';
 
 // `000`
 // console.log();
@@ -27,7 +28,7 @@ class MainScene extends Phaser.Scene {
         this.graphics.setDepth(-1); // -1 ensures it's behind other game elements
 
         //
-
+/*
 const menuData = {
     parent: [
         { id: 'menu1', content: [
@@ -57,8 +58,52 @@ const myMenuSystem = new MenuSystem(this, {
     contentIndent: 0,
     verticalPadding: 8
 });
+*/
 
 
+
+
+const gatherRenderer = (scene, container, item, y, menu) => {
+  const boxHeight = menu.itemHeight * 1.5;
+
+  const bg = scene.add.rectangle(menu.contentIndent, y, menu.width - menu.contentIndent, boxHeight, 0x555555)
+    .setOrigin(0)
+    .setInteractive({ useHandCursor: true });
+
+  const icon = scene.add.rectangle(menu.contentIndent + 20, y + boxHeight / 2, 24, 24, 0xaaaaaa);
+
+  const progress = Math.min(1, item.current / item.required);
+  const barBg = scene.add.rectangle(menu.contentIndent + 60, y + boxHeight / 2, 150, 12, 0x222222).setOrigin(0, 0.5);
+  const barFill = scene.add.rectangle(menu.contentIndent + 60, y + boxHeight / 2, 150 * progress, 12, 0x00ff00).setOrigin(0, 0.5);
+
+  const label = scene.add.text(menu.contentIndent + 220, y + boxHeight / 2, `${item.current}/${item.required}`, {
+    fontSize: '14px',
+    color: '#fff'
+  }).setOrigin(0, 0.5);
+
+  container.add([bg, icon, barBg, barFill, label]);
+
+  bg.on('pointerdown', () => {
+    console.log(`Gather action: ${item.action}`);
+  });
+
+  return y + boxHeight + menu.verticalPadding;
+};
+
+const menu = new MenuSystem(this, {
+  data: {
+    parent: [
+      { id: 'Inventory', content: [{ title: 'Sword', action: 'equip' }] },
+      { id: 'Gathering', type: 'gather', content: [
+        { title: 'Wood', current: 50, required: 200, action: 'gatherWood' },
+        { title: 'Stone', current: 120, required: 300, action: 'gatherStone' }
+      ]}
+    ]
+  },
+  renderers: {
+    gather: gatherRenderer
+  }
+});
 
 
 
