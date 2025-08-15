@@ -1,7 +1,7 @@
 import TextObj from './TextObj.js';
-//import ImgObj from './ImgObj.js';
-//import RectObj from './RectObj.js';
 import MenuSystem from './MenuSystem.js';
+import RectObj from './RectObj.js';
+//import ImgObj from './ImgObj.js';
 
 // `000`
 // console.log();
@@ -39,19 +39,18 @@ class MainScene extends Phaser.Scene {
         this.graphics.setDepth(-1); // -1 ensures it's behind other game elements
 
         //// MENUS + CONTENT
-        const menuUI = new MenuSystem({ scene, x: 50, y: 50 });
-        new TextObj('Menu 1');
-        new TextObj('Menu 1', { text: 'Content 1', bgColor: 0x444444 });
-        new TextObj('Menu 1', { text: 'Content 2', bgColor: 0x555555 });
-        new TextObj('Menu 2', { text: 'Image Content', imageKey: 'logo', bgColor: 0x999999 });
-        new TextObj('Menu 3', { text: 'Rectangle Item', width: 200, height: 100, bgColor: 0x777777 });
-        //new ImgObj('Menu 2', { text: 'Image Content', imageKey: 'logo', bgColor: 0x999999 });
-        //new RectObj('Menu 3', { text: 'Rectangle Item', width: 200, height: 100, bgColor: 0x777777 });
+        this.menuUI = new MenuSystem({ scene, x: 50, y: 50 });
         
-        //console.log('All Menu Objects: ');
-        //console.log(TextObj.getAllMenuObjects());
-        //console.log('Menu height: ');
-        //console.log(menuUI.getHeight());
+        new TextObj('Menu 1');
+        new TextObj('Menu 1', { text: '1 Content 1', bgColor: 0x444444 });
+        new TextObj('Menu 1', { text: '1 Content 2', bgColor: 0x555555 });
+        new TextObj('Menu 2', { text: '2 Content 1', bgColor: 0x999999 });
+        new TextObj('Menu 3', { text: '3 Content 1', bgColor: 0x777777 });
+        new RectObj('Menu 3', { height: 100, bgColor: 0x777777 });
+        new RectObj('Menu 4');
+        //new ImgObj('Menu 2', { text: 'Image Content', imageKey: 'logo', bgColor: 0x999999 });
+
+        //console.log(this.menuUI.menus);
 
 
     } // create()

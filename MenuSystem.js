@@ -1,98 +1,68 @@
-// MenuSystem.js
 import EmptyObj from './EmptyObj.js';
 
 export default class MenuSystem {
-    constructor(config = {}) {
-        this.scene = config.scene;
+    constructor({ scene, x = 50, y = 50, width = 300, itemHeight = 40, verticalPadding = 5 }) {
+        this.scene = scene;
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.itemHeight = itemHeight;
+        this.verticalPadding = verticalPadding;
 
-        this.x = config.x ?? 10;
-        this.y = config.y ?? 10;
-        this.width = config.width ?? 300;
-        this.itemHeight = config.itemHeight ?? 40;
-        this.contentIndent = config.contentIndent ?? 20;
-        this.verticalPadding = config.verticalPadding ?? 5;
-
+        this.menus = {}; // { parentName: [objects...] }
         this.expandedParents = new Set();
+
         this.container = this.scene.add.container(this.x, this.y);
 
-        // Auto-update when any menu data changes
-        EmptyObj.onUpdate(() => this.render());
+        // Tell EmptyObj where to register new objects
+        EmptyObj.menuSystem = this;
+    }
 
+    getWidth() {
+        return this.width;
+    }
+
+    addItemToMenu(obj) {
+        if (!this.menus[obj.parentMenu]) {
+            this.menus[obj.parentMenu] = [];
+        }
+        this.menus[obj.parentMenu].push(obj);
         this.render();
     }
 
     render() {
         this.container.removeAll(true);
+
         let currentY = 0;
-
-        const menus = EmptyObj.getAllMenus();
-
-        for (const [parentMenu, data] of Object.entries(menus)) {
-            // Parent menu rectangle
+        for (const parentName in this.menus) {
+            // Parent button
             const parentBg = this.scene.add.rectangle(0, currentY, this.width, this.itemHeight, 0x0000ff)
                 .setOrigin(0)
                 .setInteractive({ useHandCursor: true });
-
-            const parentText = this.scene.add.text(10, currentY + this.itemHeight / 2, parentMenu, {
-                fontSize: '18px',
-                color: '#ffffff'
+            const parentText = this.scene.add.text(10, currentY + this.itemHeight / 2, parentName, {
+                fontSize: '18px', color: '#ffffff'
             }).setOrigin(0, 0.5);
 
-            this.container.add([parentBg, parentText]);
-
             parentBg.on('pointerdown', () => {
-                if (this.expandedParents.has(parentMenu)) {
-                    this.expandedParents.delete(parentMenu);
+                if (this.expandedParents.has(parentName)) {
+                    this.expandedParents.delete(parentName);
                 } else {
-                    this.expandedParents.add(parentMenu);
+                    this.expandedParents.add(parentName);
                 }
                 this.render();
             });
 
+            this.container.add([parentBg, parentText]);
             currentY += this.itemHeight + this.verticalPadding;
 
             // Render children if expanded
-            if (this.expandedParents.has(parentMenu)) {
-                data.items.forEach(item => {
-                    const contentBg = this.scene.add.rectangle(
-                        this.contentIndent,
-                        currentY,
-                        this.width - this.contentIndent,
-                        this.itemHeight,
-                        item.bgColor
-                    )
-                    .setOrigin(0)
-                    .setInteractive({ useHandCursor: true });
-
-                    const contentText = this.scene.add.text(
-                        this.contentIndent + 10,
-                        currentY + this.itemHeight / 2,
-                        item.text,
-                        { fontSize: '16px', color: '#ffffff' }
-                    ).setOrigin(0, 0.5);
-
-                    this.container.add([contentBg, contentText]);
-
-                    contentBg.on('pointerdown', () => {
-                        console.log(`Action triggered: ${item.action || 'no-action'}`);
-                    });
-
-                    currentY += this.itemHeight + this.verticalPadding;
-                });
+            if (this.expandedParents.has(parentName)) {
+                for (const obj of this.menus[parentName]) {
+                    const contentX = 20; // indent
+                    obj.render(this.scene, contentX, currentY);
+                    currentY += obj.height + this.verticalPadding;
+                }
             }
         }
-    }
-
-    getHeight() {
-        let height = 0;
-        const menus = EmptyObj.getAllMenus();
-
-        for (const [parentMenu, data] of Object.entries(menus)) {
-            height += this.itemHeight + this.verticalPadding;
-            if (this.expandedParents.has(parentMenu)) {
-                height += data.items.length * (this.itemHeight + this.verticalPadding);
-            }
-        }
-        return height;
     }
 }
