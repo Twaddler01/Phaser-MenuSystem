@@ -6,22 +6,6 @@ import MenuSystem from './MenuSystem.js';
 // `000`
 // console.log();
 
-// Global Array
-export const menuData = {
-  "Menu 1": {
-    parentMenu: "Menu 1",
-    items: [
-      { text: "Menu 1 Content", bgColor: 3355443, action: undefined }
-    ]
-  },
-  "Menu 2": {
-    parentMenu: "Menu 2",
-    items: [
-      { text: "Menu 2 Content", bgColor: 3355443, action: undefined }
-    ]
-  }
-}
-
 // Export scene
 export let scene = null;
 export function setScene(s) {
@@ -54,20 +38,20 @@ class MainScene extends Phaser.Scene {
         this.graphics.fillRect(0, 0, width, height);
         this.graphics.setDepth(-1); // -1 ensures it's behind other game elements
 
-        //
-
-const menuUI = new MenuSystem({ scene, x: 50, y: 50 });
-
-new TextObj('Menu 1');
-new TextObj('Menu 1', { text: 'Content 1', bgColor: 0x444444 });
-new TextObj('Menu 1', { text: 'Content 2', bgColor: 0x555555 });
-new TextObj('Menu 2', { text: 'Image Content', imageKey: 'logo', bgColor: 0x999999 });
-new TextObj('Menu 3', { text: 'Rectangle Item', width: 200, height: 100, bgColor: 0x777777 });
-//new ImgObj('Menu 2', { text: 'Image Content', imageKey: 'logo', bgColor: 0x999999 });
-//new RectObj('Menu 3', { text: 'Rectangle Item', width: 200, height: 100, bgColor: 0x777777 });
-
-console.log('All Menu Objects:', TextObj.getAllMenuObjects());
-console.log('Menu height:', menuUI.getHeight());
+        //// MENUS + CONTENT
+        const menuUI = new MenuSystem({ scene, x: 50, y: 50 });
+        new TextObj('Menu 1');
+        new TextObj('Menu 1', { text: 'Content 1', bgColor: 0x444444 });
+        new TextObj('Menu 1', { text: 'Content 2', bgColor: 0x555555 });
+        new TextObj('Menu 2', { text: 'Image Content', imageKey: 'logo', bgColor: 0x999999 });
+        new TextObj('Menu 3', { text: 'Rectangle Item', width: 200, height: 100, bgColor: 0x777777 });
+        //new ImgObj('Menu 2', { text: 'Image Content', imageKey: 'logo', bgColor: 0x999999 });
+        //new RectObj('Menu 3', { text: 'Rectangle Item', width: 200, height: 100, bgColor: 0x777777 });
+        
+        //console.log('All Menu Objects: ');
+        //console.log(TextObj.getAllMenuObjects());
+        //console.log('Menu height: ');
+        //console.log(menuUI.getHeight());
 
 
     } // create()
