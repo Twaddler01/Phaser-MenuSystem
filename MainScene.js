@@ -1,8 +1,13 @@
-//import MenuSystem from './MenuSystem.js';
-import MenuSystem from './MenuSystem_2.js';
+import MenuSystem from './MenuSystem.js';
+import TextObj from './TextObj.js';
 
 // `000`
 // console.log();
+
+export let scene = null;
+export function setScene(s) {
+    scene = s;
+}
 
 class MainScene extends Phaser.Scene {
     constructor() {
@@ -19,6 +24,9 @@ class MainScene extends Phaser.Scene {
     }
 
     create() {
+        // Set scene to load globally
+        setScene(this);
+        
         const width = this.game.config.width;
         const height = this.game.config.height;
         // Game area rectangle
@@ -60,53 +68,28 @@ const myMenuSystem = new MenuSystem(this, {
 });
 */
 
-
-
-
-const gatherRenderer = (scene, container, item, y, menu) => {
-  const boxHeight = menu.itemHeight * 1.5;
-
-  const bg = scene.add.rectangle(menu.contentIndent, y, menu.width - menu.contentIndent, boxHeight, 0x555555)
-    .setOrigin(0)
-    .setInteractive({ useHandCursor: true });
-
-  const icon = scene.add.rectangle(menu.contentIndent + 20, y + boxHeight / 2, 24, 24, 0xaaaaaa);
-
-  const progress = Math.min(1, item.current / item.required);
-  const barBg = scene.add.rectangle(menu.contentIndent + 60, y + boxHeight / 2, 150, 12, 0x222222).setOrigin(0, 0.5);
-  const barFill = scene.add.rectangle(menu.contentIndent + 60, y + boxHeight / 2, 150 * progress, 12, 0x00ff00).setOrigin(0, 0.5);
-
-  const label = scene.add.text(menu.contentIndent + 220, y + boxHeight / 2, `${item.current}/${item.required}`, {
-    fontSize: '14px',
-    color: '#fff'
-  }).setOrigin(0, 0.5);
-
-  container.add([bg, icon, barBg, barFill, label]);
-
-  bg.on('pointerdown', () => {
-    console.log(`Gather action: ${item.action}`);
-  });
-
-  return y + boxHeight + menu.verticalPadding;
-};
-
-const menu = new MenuSystem(this, {
+/*const menu = new MenuSystem(this, {
   data: {
     parent: [
-      { id: 'Inventory', content: [{ title: 'Sword', action: 'equip' }] },
-      { id: 'Gathering', type: 'gather', content: [
-        { title: 'Wood', current: 50, required: 200, action: 'gatherWood' },
-        { title: 'Stone', current: 120, required: 300, action: 'gatherStone' }
+      { id: 'inventory', title: 'Inventory', content: [
+        { title: 'Sword', action: 'equip' }
+      ]},
+      { id: 'gathering', title: 'Gathering', content: [
+        { title: 'Wood', action: 'gatherWood' },
+        { title: 'Stone', action: 'gatherStone' }
       ]}
     ]
   },
-  renderers: {
-    gather: gatherRenderer
-  }
+  contentIndent: 0
+});*/
+
+
+
+
+new TextObj({
+    parentMenu: 'Menu A',
+    stuff: 0
 });
-
-
-
 
 
     } // create()

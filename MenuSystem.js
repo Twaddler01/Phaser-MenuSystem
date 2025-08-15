@@ -15,12 +15,12 @@ export default class MenuSystem {
     this.scene = scene;
     this.data = config.data || { parent: [] };
 
-    this.x = config.x || 50;
-    this.y = config.y || 50;
-    this.width = config.width || 300;
-    this.itemHeight = config.itemHeight || 40;
-    this.contentIndent = (config.contentIndent !== undefined) ? config.contentIndent : 20;
-    this.verticalPadding = config.verticalPadding || 5;
+    this.x = config.x ?? 10;
+    this.y = config.y ?? 10;
+    this.width = config.width ?? 300;
+    this.itemHeight = config.itemHeight ?? 40;
+    this.contentIndent = config.contentIndent ?? 20;
+    this.verticalPadding = config.verticalPadding ?? 5;
 
     // Track expanded states for parents by id (all collapsed initially)
     this.expandedParents = new Set();
@@ -43,7 +43,7 @@ export default class MenuSystem {
         .setInteractive({ useHandCursor: true });
 
       // Parent text
-      const parentText = this.scene.add.text(10, currentY + this.itemHeight / 2, parent.id, {
+      const parentText = this.scene.add.text(10, currentY + this.itemHeight / 2, parent.title, {
         fontSize: '18px',
         color: '#ffffff'
       }).setOrigin(0, 0.5);
