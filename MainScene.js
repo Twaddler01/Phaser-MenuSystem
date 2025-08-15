@@ -39,15 +39,30 @@ class MainScene extends Phaser.Scene {
         this.graphics.setDepth(-1); // -1 ensures it's behind other game elements
 
         //// MENUS + CONTENT
-        this.menuUI = new MenuSystem({ scene, x: 50, y: 50 });
-        
-        new TextObj('Menu 1');
-        new TextObj('Menu 1', { text: '1 Content 1', bgColor: 0x444444 });
-        new TextObj('Menu 1', { text: '1 Content 2', bgColor: 0x555555 });
-        new TextObj('Menu 2', { text: '2 Content 1', bgColor: 0x999999 });
-        new TextObj('Menu 3', { text: '3 Content 1', bgColor: 0x777777 });
-        new RectObj('Menu 3', { height: 100, bgColor: 0x777777 });
-        new RectObj('Menu 4');
+        this.menuUI = new MenuSystem({ scene: this, x: 50, y: 50, width: 350, contentIndent: 0 });
+
+        new TextObj('Menu 1', {
+            text: 'Content 1',
+            bgColor: 0x444444,
+            onClick: (obj) => console.log(`Clicked ${obj.text} (ID ${obj.id})`)
+        });
+
+        new TextObj('Menu 1', {
+            text: 'Content 2',
+            bgColor: 0x555555,
+            onClick: (obj) => console.log(`Custom action for ${obj.text}`)
+        });
+
+        new RectObj('Menu 2', {
+            height: 100,
+            bgColor: 0x777777,
+            onClick: (obj) => console.log(`RectObj clicked: ID ${obj.id}`)
+        });
+
+        new TextObj('Menu 3', {
+            text: 'Only item',
+            bgColor: 0x999999
+        });
         //new ImgObj('Menu 2', { text: 'Image Content', imageKey: 'logo', bgColor: 0x999999 });
 
         //console.log(this.menuUI.menus);

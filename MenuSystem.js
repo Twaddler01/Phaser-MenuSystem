@@ -1,20 +1,29 @@
 import EmptyObj from './EmptyObj.js';
 
 export default class MenuSystem {
-    constructor({ scene, x = 50, y = 50, width = 300, itemHeight = 40, verticalPadding = 5 }) {
+    constructor({ 
+        scene, 
+        x = 50, 
+        y = 50, 
+        width = 300, 
+        itemHeight = 40, 
+        verticalPadding = 5, 
+        contentIndent = 10
+    }) {
         this.scene = scene;
         this.x = x;
         this.y = y;
         this.width = width;
         this.itemHeight = itemHeight;
         this.verticalPadding = verticalPadding;
+        this.contentIndent = contentIndent;
 
         this.menus = {}; // { parentName: [objects...] }
         this.expandedParents = new Set();
 
         this.container = this.scene.add.container(this.x, this.y);
 
-        // Tell EmptyObj where to register new objects
+        // Register MenuSystem in EmptyObj
         EmptyObj.menuSystem = this;
     }
 
@@ -58,7 +67,7 @@ export default class MenuSystem {
             // Render children if expanded
             if (this.expandedParents.has(parentName)) {
                 for (const obj of this.menus[parentName]) {
-                    const contentX = 20; // indent
+                    const contentX = this.contentIndent; // indent
                     obj.render(this.scene, contentX, currentY);
                     currentY += obj.height + this.verticalPadding;
                 }
