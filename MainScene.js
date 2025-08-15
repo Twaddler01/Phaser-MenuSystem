@@ -1,9 +1,28 @@
-import MenuSystem from './MenuSystem.js';
 import TextObj from './TextObj.js';
+//import ImgObj from './ImgObj.js';
+//import RectObj from './RectObj.js';
+import MenuSystem from './MenuSystem.js';
 
 // `000`
 // console.log();
 
+// Global Array
+export const menuData = {
+  "Menu 1": {
+    parentMenu: "Menu 1",
+    items: [
+      { text: "Menu 1 Content", bgColor: 3355443, action: undefined }
+    ]
+  },
+  "Menu 2": {
+    parentMenu: "Menu 2",
+    items: [
+      { text: "Menu 2 Content", bgColor: 3355443, action: undefined }
+    ]
+  }
+}
+
+// Export scene
 export let scene = null;
 export function setScene(s) {
     scene = s;
@@ -36,60 +55,19 @@ class MainScene extends Phaser.Scene {
         this.graphics.setDepth(-1); // -1 ensures it's behind other game elements
 
         //
-/*
-const menuData = {
-    parent: [
-        { id: 'menu1', content: [
-            { id: 'menu1content1', title: 'Menu 1 - Contents 1', bgColor: 0x333333, action: 'act1.1' },
-            { id: 'menu1content2', title: 'Menu 1 - Contents 2', bgColor: 0x333333, action: 'act1.2' },
-            { id: 'menu1content3', title: 'Menu 1 - Contents 3', bgColor: 0x333333, action: 'act1.3' },
-        ] },
-        { id: 'menu2', content: [
-            { id: 'menu2content1', title: 'Menu 2 - Contents 1', bgColor: 0x333333, action: 'act2.1' },
-            { id: 'menu2content2', title: 'Menu 2 - Contents 2', bgColor: 0x333333, action: 'act2.2' },
-            { id: 'menu2content3', title: 'Menu 2 - Contents 3', bgColor: 0x333333, action: 'act2.3' },
-        ] },
-        { id: 'menu3', content: [
-            { id: 'menu3content1', title: 'Menu 3 - Contents 1', bgColor: 0x333333, action: 'act3.1' },
-            { id: 'menu3content2', title: 'Menu 3 - Contents 2', bgColor: 0x333333, action: 'act3.2' },
-            { id: 'menu3content3', title: 'Menu 3 - Contents 3', bgColor: 0x333333, action: 'act3.3' },
-        ] }
-    ]
-};
 
-const myMenuSystem = new MenuSystem(this, {
-    data: menuData,
-    x: 50,
-    y: 50,
-    width: 300,
-    itemHeight: 40,
-    contentIndent: 0,
-    verticalPadding: 8
-});
-*/
+const menuUI = new MenuSystem({ scene, x: 50, y: 50 });
 
-/*const menu = new MenuSystem(this, {
-  data: {
-    parent: [
-      { id: 'inventory', title: 'Inventory', content: [
-        { title: 'Sword', action: 'equip' }
-      ]},
-      { id: 'gathering', title: 'Gathering', content: [
-        { title: 'Wood', action: 'gatherWood' },
-        { title: 'Stone', action: 'gatherStone' }
-      ]}
-    ]
-  },
-  contentIndent: 0
-});*/
+new TextObj('Menu 1');
+new TextObj('Menu 1', { text: 'Content 1', bgColor: 0x444444 });
+new TextObj('Menu 1', { text: 'Content 2', bgColor: 0x555555 });
+new TextObj('Menu 2', { text: 'Image Content', imageKey: 'logo', bgColor: 0x999999 });
+new TextObj('Menu 3', { text: 'Rectangle Item', width: 200, height: 100, bgColor: 0x777777 });
+//new ImgObj('Menu 2', { text: 'Image Content', imageKey: 'logo', bgColor: 0x999999 });
+//new RectObj('Menu 3', { text: 'Rectangle Item', width: 200, height: 100, bgColor: 0x777777 });
 
-
-
-
-new TextObj({
-    parentMenu: 'Menu A',
-    stuff: 0
-});
+console.log('All Menu Objects:', TextObj.getAllMenuObjects());
+console.log('Menu height:', menuUI.getHeight());
 
 
     } // create()
