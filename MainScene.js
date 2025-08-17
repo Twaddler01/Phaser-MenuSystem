@@ -1,16 +1,11 @@
-import TextObj from './TextObj.js';
+import { setScene } from './sceneManager.js';
 import MenuSystem from './MenuSystem.js';
-import RectObj from './RectObj.js';
-//import ImgObj from './ImgObj.js';
+//import TextObj from './TextObj.js';
+//import RectObj from './RectObj.js';
+import ImgObj from './ImgObj.js';
 
 // `000`
 // console.log();
-
-// Export scene
-export let scene = null;
-export function setScene(s) {
-    scene = s;
-}
 
 class MainScene extends Phaser.Scene {
     constructor() {
@@ -39,8 +34,9 @@ class MainScene extends Phaser.Scene {
         this.graphics.setDepth(-1); // -1 ensures it's behind other game elements
 
         //// MENUS + CONTENT
-        this.menuUI = new MenuSystem({ scene: this, x: 50, y: 50, width: 350, contentIndent: 0 });
+        this.menuUI = new MenuSystem({ x: 50, y: 50, width: 350, itemHeight: 50, contentIndent: 0 });
 
+/*
         new TextObj('Menu 1', {
             text: 'Content 1',
             bgColor: 0x444444,
@@ -63,8 +59,16 @@ class MainScene extends Phaser.Scene {
             text: 'Only item',
             bgColor: 0x999999
         });
-        //new ImgObj('Menu 2', { text: 'Image Content', imageKey: 'logo', bgColor: 0x999999 });
+        */
 
+        new ImgObj({ parentMenu: 'Menu 4', imageKey: 'opened', width: 50, height: 50, bgColor: 0x444444 });
+        new ImgObj({ parentMenu: 'Menu 5', imageKey: 'opened', stretch: { width: 100 }, bgColor: 0x444444 });
+        new ImgObj({ parentMenu: 'Menu 6', imageKey: 'opened', bgColor: 0x666666 });
+        new ImgObj({ parentMenu: 'Menu 7', imageKey: 'opened', fixed: { width: 100 }, bgColor: 0x444444 });
+
+//new TextObj('Menu 7');
+
+        this.menuUI.render();
         //console.log(this.menuUI.menus);
 
 

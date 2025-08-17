@@ -1,35 +1,34 @@
-let nextId = 1;
+import { scene } from './sceneManager.js';
 
 export default class EmptyObj {
-    static menuSystem = null; // Set by MenuSystem
+    constructor(config = {}) {
+        this.parentMenu = config.parentMenu || 'default';
+        this.width = config.width || 200;
+        this.height = config.height || 40; // default row height
+        this.itemHeight = config.itemHeight || this.height;
+        this.bgColor = config.bgColor || 0x666666;
 
-    constructor(parentMenu, options = {}) {
-        if (!parentMenu) throw new Error("parentMenu is required.");
-        if (!EmptyObj.menuSystem) throw new Error("MenuSystem not initialized yet.");
+        this.container = scene.add.container(0, 0);
 
-        this.id = nextId++; // unique ID
-        this.parentMenu = parentMenu;
-        this.bgColor = options.bgColor ?? 0x333333;
-        this.width = options.width ?? EmptyObj.menuSystem.getWidth();
-        this.height = options.height ?? 50;
-        this.action = options.onClick ?? (() => console.log(`Clicked object ID ${this.id}`));
+        // Background rectangle
+        this.bg = scene.add.rectangle(0, 0, this.width, this.itemHeight, this.bgColor).setOrigin(0);
+        this.container.add(this.bg);
 
-        // Register with the MenuSystem
-        EmptyObj.menuSystem.addItemToMenu(this);
+        // Optional click
+        if (config.onClick) {
+            this.bg.setInteractive({ useHandCursor: true });
+            this.bg.on('pointerdown', () => config.onClick(this));
+        }
+
+        // Register with MenuSystem
+        if (EmptyObj.menuSystem) {
+            EmptyObj.menuSystem.addItemToMenu(this);
+        }
     }
 
-    /**
-     * Adds click handling to a Phaser display object
-     */
-    makeInteractive(displayObj) {
-        displayObj.setInteractive({ useHandCursor: true })
-            .on('pointerdown', () => {
-                if (typeof this.action === 'function') {
-                    this.action(this);
-                }
-            });
+    render(scene) {
+        // Ensure container has correct itemHeight
+        this.bg.height = this.itemHeight;
+        return this.container;
     }
-
-    // Subclasses must override this
-    render(scene, x, y) { }
 }

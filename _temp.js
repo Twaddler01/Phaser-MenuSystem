@@ -1,36 +1,15 @@
-import MenuSystem from './MenuSystem.js';
-import TextObj from './TextObj.js';
-import RectObj from './RectObj.js';
+create() {
+    setScene(this);
 
-export default class MainScene extends Phaser.Scene {
-    constructor() {
-        super({ key: 'MainScene' });
-    }
+    this.menuUI = new MenuSystem({ x: 50, y: 50, width: 350, itemHeight: 50, contentIndent: 0 });
 
-    create() {
-        this.menuUI = new MenuSystem({ scene: this, x: 50, y: 50, width: 350 });
+    new ImgObj({ parentMenu: 'Menu 4', imageKey: 'opened', width: 50, height: 50, bgColor: 0x444444 });
+    new ImgObj({ parentMenu: 'Menu 5', imageKey: 'opened', stretch: { width: 100 }, bgColor: 0x444444 });
+    new ImgObj({ parentMenu: 'Menu 6', imageKey: 'opened', bgColor: 0x444444 });
 
-        new TextObj('Menu 1', {
-            text: 'Content 1',
-            bgColor: 0x444444,
-            onClick: (obj) => console.log(`Clicked ${obj.text} (ID ${obj.id})`)
-        });
+    this.menuUI.expandedParents.add('Menu 4');
+    this.menuUI.expandedParents.add('Menu 5');
+    this.menuUI.expandedParents.add('Menu 6');
 
-        new TextObj('Menu 1', {
-            text: 'Content 2',
-            bgColor: 0x555555,
-            onClick: (obj) => console.log(`Custom action for ${obj.text}`)
-        });
-
-        new RectObj('Menu 2', {
-            height: 100,
-            bgColor: 0x777777,
-            onClick: (obj) => console.log(`RectObj clicked: ID ${obj.id}`)
-        });
-
-        new TextObj('Menu 3', {
-            text: 'Only item',
-            bgColor: 0x999999
-        });
-    }
+    this.menuUI.render();
 }
