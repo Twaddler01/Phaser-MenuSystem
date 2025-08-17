@@ -34,42 +34,41 @@ class MainScene extends Phaser.Scene {
         this.graphics.setDepth(-1); // -1 ensures it's behind other game elements
 
         //// MENUS + CONTENT
-        this.menuUI = new MenuSystem({ x: 50, y: 50, width: 350, itemHeight: 50, contentIndent: 0 });
+        const menu = new MenuSystem({ x: 50, y: 50, width: 350, itemHeight: 50, contentIndent: 0 });
 
-/*
-        new TextObj('Menu 1', {
-            text: 'Content 1',
+        menu.addItem(ImgObj, { 
+            parentMenu: 'Menu 4', 
+            imageKey: 'opened', 
+            imgWidth: 50, 
+            imgHeight: 50, 
+            bgColor: 0x444444, 
+            onClick: (obj) => console.log(`ImgObj clicked: ID ${obj.id}`)
+        });
+        
+        menu.addItem(ImgObj, { 
+            parentMenu: 'Menu 5', 
+            imageKey: 'opened', 
+            stretch: { imgWidth: 100 }, 
             bgColor: 0x444444,
-            onClick: (obj) => console.log(`Clicked ${obj.text} (ID ${obj.id})`)
+            onClick: (obj) => console.log(`ImgObj clicked: ID ${obj.id}`)
+        });
+        
+        menu.addItem(ImgObj, { 
+            parentMenu: 'Menu 6', 
+            imageKey: 'opened', 
+            bgColor: 0x666666,
+            onClick: (obj) => console.log(`ImgObj clicked: ID ${obj.id}`)
+        });
+        
+        menu.addItem(ImgObj, { 
+            parentMenu: 'Menu 7', 
+            imageKey: 'opened', 
+            fixed: { imgWidth: 100 }, 
+            bgColor: 0x444444,
+            onClick: (obj) => console.log(`ImgObj clicked: ID ${obj.id}`)
         });
 
-        new TextObj('Menu 1', {
-            text: 'Content 2',
-            bgColor: 0x555555,
-            onClick: (obj) => console.log(`Custom action for ${obj.text}`)
-        });
-
-        new RectObj('Menu 2', {
-            height: 100,
-            bgColor: 0x777777,
-            onClick: (obj) => console.log(`RectObj clicked: ID ${obj.id}`)
-        });
-
-        new TextObj('Menu 3', {
-            text: 'Only item',
-            bgColor: 0x999999
-        });
-        */
-
-        new ImgObj({ parentMenu: 'Menu 4', imageKey: 'opened', width: 50, height: 50, bgColor: 0x444444 });
-        new ImgObj({ parentMenu: 'Menu 5', imageKey: 'opened', stretch: { width: 100 }, bgColor: 0x444444 });
-        new ImgObj({ parentMenu: 'Menu 6', imageKey: 'opened', bgColor: 0x666666 });
-        new ImgObj({ parentMenu: 'Menu 7', imageKey: 'opened', fixed: { width: 100 }, bgColor: 0x444444 });
-
-//new TextObj('Menu 7');
-
-        this.menuUI.render();
-        //console.log(this.menuUI.menus);
+        menu.render();
 
 
     } // create()

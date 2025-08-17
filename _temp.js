@@ -1,15 +1,34 @@
-create() {
-    setScene(this);
+export default class EmptyObj {
+    constructor(config = {}) {
+        this.parentMenu = config.parentMenu || 'default';
+        this.width = config.width || 200;
+        this.height = config.height || 40; 
+        this.itemHeight = config.itemHeight || this.height;
+        this.bgColor = config.bgColor || 0x666666;
+        this.onClick = config.onClick || null;
 
-    this.menuUI = new MenuSystem({ x: 50, y: 50, width: 350, itemHeight: 50, contentIndent: 0 });
+        this.container = scene.add.container(0, 0);
+        this.bg = scene.add.rectangle(0, 0, this.width, this.itemHeight, this.bgColor)
+            .setOrigin(0, 0);
 
-    new ImgObj({ parentMenu: 'Menu 4', imageKey: 'opened', width: 50, height: 50, bgColor: 0x444444 });
-    new ImgObj({ parentMenu: 'Menu 5', imageKey: 'opened', stretch: { width: 100 }, bgColor: 0x444444 });
-    new ImgObj({ parentMenu: 'Menu 6', imageKey: 'opened', bgColor: 0x444444 });
+        this.container.add(this.bg);
 
-    this.menuUI.expandedParents.add('Menu 4');
-    this.menuUI.expandedParents.add('Menu 5');
-    this.menuUI.expandedParents.add('Menu 6');
+        if (this.onClick) {
+            this.bg.setInteractive({ useHandCursor: true })
+                  .on('pointerdown', () => this.onClick(this));
+        }
+    }
 
-    this.menuUI.render();
+    render() {
+        // Update graphics size
+        this.bg.width = this.width;
+        this.bg.height = this.itemHeight;
+
+        // Update hit area (so clicks still match size)
+        if (this.bg.input) {
+            this.bg.input.hitArea.setSize(this.bg.width, this.bg.height);
+        }
+
+        return this.container;
+    }
 }
