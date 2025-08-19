@@ -8,17 +8,24 @@ export default class EmptyObj {
         this.width = config.width;
         this.itemHeight = config.itemHeight;
         this.bgColor = config.bgColor;
+        this.noBg = config.noBg || false;
 
         this.container = scene.add.container(0, 0);
 
         this.bg = scene.add.rectangle(0, 0, this.width, this.itemHeight, this.bgColor).setOrigin(0);
         this.container.add(this.bg);
+    
         this.id = 'content_' + contentId;
         contentId++;
 
-        if (config.onClick) {
+        if (config.onClick && !this.noBg) {
             this.bg.setInteractive({ useHandCursor: true });
             this.bg.on('pointerdown', () => config.onClick(this));
+        }
+
+        // Hide if an overlsy
+        if (this.noBg) {
+            this.bg.setFillStyle(0x000000, 0);   // invisible
         }
     }
 

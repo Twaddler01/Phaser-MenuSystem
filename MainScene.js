@@ -1,6 +1,6 @@
 import { setScene } from './sceneManager.js';
 import MenuSystem from './MenuSystem.js';
-//import TextObj from './TextObj.js';
+import TextObj from './TextObj.js';
 //import RectObj from './RectObj.js';
 import ImgObj from './ImgObj.js';
 
@@ -43,6 +43,13 @@ class MainScene extends Phaser.Scene {
             imgHeight: 50, 
             bgColor: 0x444444, 
             onClick: (obj) => console.log(`ImgObj clicked: ID ${obj.id}`)
+        });
+        
+        menu.addItemOver(TextObj, { 
+            parentMenu: 'Menu 4', 
+            text: 'Content Text for Menu 4...',
+            bgColor: 0x444444, 
+            onClick: (obj) => console.log(`TextObj clicked: ID ${obj.id}`)
         });
         
         menu.addItem(ImgObj, { 

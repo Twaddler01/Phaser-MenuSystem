@@ -36,6 +36,30 @@ export default class MenuSystem {
         return item;
     }
 
+    // Add an overlay item inside an existing parent row (doesn't affect layout height)
+    addItemOver(objClass, config = {}) {
+        const parentName = config.parentMenu || 'default';
+    
+        // Ensure parent exists first
+        const parentBg = this.getOrCreateParentBg(parentName);
+    
+        // Shared props
+        Object.assign(config, {
+            width: config.width || this.width,
+            itemHeight: config.itemHeight || this.itemHeight,
+            bgColor: config.bgColor || this.bgColor,
+            parentMenu: parentName
+        });
+    
+        const item = new objClass({ ...config, noBg: true });
+    
+        if (!this.menus[parentName]) this.menus[parentName] = [];
+        if (!this.menus[parentName]._over) this.menus[parentName]._over = [];
+        this.menus[parentName]._over.push(item);
+    
+        return item;
+    }
+
     // Get or create parent rectangle
     getOrCreateParentBg(parentName) {
         let parentBg = this.container.list.find(c => c.isParentBg && c.text === parentName);
@@ -70,6 +94,67 @@ export default class MenuSystem {
         return parentText;
     }
 
+    render() {
+        let currentY = 0;
+    
+        for (const parentName in this.menus) {
+            const parentBg = this.getOrCreateParentBg(parentName);
+            const parentText = this.getOrCreateParentText(parentName);
+            const isExpanded = this.expandedParents.has(parentName);
+
+            // Position parent row
+            parentBg.y = currentY;
+            parentText.y = currentY + this.itemHeight / 2;
+    
+            // Position overlay items below this parent (but no added height)
+            if (this.menus[parentName]._over) {
+                for (const obj of this.menus[parentName]._over) {
+                    obj.render();
+    
+                    if (!obj.container.xSet) {
+                        obj.container.x = this.contentIndent;
+                        obj.container.xSet = true;
+                    }
+    
+                    // Lock to baseline immediately below parent row
+                    obj.container.y = parentBg.y + parentBg.height + this.verticalPadding;
+    
+                    obj.container.setVisible(isExpanded);
+    
+                    if (!this.container.list.includes(obj.container)) {
+                        this.container.add(obj.container);
+                    }
+                    this.container.bringToTop(obj.container);
+                }
+            }
+    
+            // Move down ONLY once per parent row
+            currentY += this.itemHeight + this.verticalPadding;
+    
+            // Stack children normally
+            for (const obj of this.menus[parentName]) {
+                if (obj === this.menus[parentName]._over) continue;
+    
+                obj.render();
+    
+                if (!obj.container.xSet) {
+                    obj.container.x = this.contentIndent;
+                    obj.container.xSet = true;
+                }
+    
+                obj.container.y = currentY;
+                obj.container.setVisible(isExpanded);
+    
+                if (isExpanded) currentY += obj.itemHeight + this.verticalPadding;
+    
+                if (!this.container.list.includes(obj.container)) {
+                    this.container.add(obj.container);
+                }
+            }
+        }
+    }
+
+/*
     // Render all sections and their children
     render() {
         let currentY = 0;
@@ -106,7 +191,7 @@ export default class MenuSystem {
             }
         }
     }
-
+*/
     // Optional: reposition without fully re-rendering (useful if dynamic height changes)
     reposition() {
         this.render(); // for simplicity we can reuse render
