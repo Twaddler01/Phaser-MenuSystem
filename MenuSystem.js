@@ -154,44 +154,6 @@ export default class MenuSystem {
         }
     }
 
-/*
-    // Render all sections and their children
-    render() {
-        let currentY = 0;
-
-        for (const parentName in this.menus) {
-            const parentBg = this.getOrCreateParentBg(parentName);
-            const parentText = this.getOrCreateParentText(parentName);
-
-            parentBg.y = currentY;
-            parentText.y = currentY + this.itemHeight / 2;
-            currentY += this.itemHeight + this.verticalPadding;
-
-            const isExpanded = this.expandedParents.has(parentName);
-
-            for (const obj of this.menus[parentName]) {
-                obj.render();
-
-                // Set x relative to menu container + indent
-                if (!obj.container.xSet) {
-                    obj.container.x = this.contentIndent;
-                    obj.container.xSet = true;
-                }
-
-                // Stack vertically
-                obj.container.y = currentY;
-                obj.container.setVisible(isExpanded);
-
-                if (isExpanded) currentY += obj.itemHeight + this.verticalPadding;
-
-                // Ensure object is in the main container
-                if (!this.container.list.includes(obj.container)) {
-                    this.container.add(obj.container);
-                }
-            }
-        }
-    }
-*/
     // Optional: reposition without fully re-rendering (useful if dynamic height changes)
     reposition() {
         this.render(); // for simplicity we can reuse render
