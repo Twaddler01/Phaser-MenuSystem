@@ -1,7 +1,7 @@
 import { setScene } from './sceneManager.js';
 import MenuSystem from './MenuSystem.js';
 import TextObj from './TextObj.js';
-//import RectObj from './RectObj.js';
+import RectObj from './RectObj.js';
 import ImgObj from './ImgObj.js';
 
 // `000`
@@ -80,6 +80,11 @@ class MainScene extends Phaser.Scene {
             fixed: { imgWidth: 100 }, 
             bgColor: 0x444444,
             onClick: (obj) => console.log(`ImgObj clicked: ID ${obj.id}`)
+        });
+        
+        menu.addItem(RectObj, { 
+            parentMenu: 'Menu 8', 
+            onClick: (obj) => console.log(`RectObj clicked: ID ${obj.id}`)
         });
 
         menu.render();
