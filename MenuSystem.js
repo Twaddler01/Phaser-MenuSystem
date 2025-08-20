@@ -1,4 +1,5 @@
 import { scene } from './sceneManager.js';
+import TextObj from './TextObj.js';
 
 export default class MenuSystem {
     constructor({ x = 50, y = 50, width = 300, itemHeight = 40, verticalPadding = 5, contentIndent = 10, bgColor = 0x666666 }) {
@@ -53,7 +54,12 @@ export default class MenuSystem {
     
         const item = new objClass({ ...config, noBg: true });
     
-        if (!this.menus[parentName]) this.menus[parentName] = [];
+        // Create default text obj if no parent menu
+        if (!this.menus[parentName]) {
+            this.menus[parentName] = [];
+            this.addItem(TextObj, { parentMenu: parentName });
+        }
+        
         if (!this.menus[parentName]._over) this.menus[parentName]._over = [];
         this.menus[parentName]._over.push(item);
     
@@ -96,7 +102,7 @@ export default class MenuSystem {
 
     render() {
         let currentY = 0;
-    
+
         for (const parentName in this.menus) {
             const parentBg = this.getOrCreateParentBg(parentName);
             const parentText = this.getOrCreateParentText(parentName);
@@ -127,7 +133,7 @@ export default class MenuSystem {
                     this.container.bringToTop(obj.container);
                 }
             }
-    
+
             // Move down ONLY once per parent row
             currentY += this.itemHeight + this.verticalPadding;
     

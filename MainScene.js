@@ -44,10 +44,17 @@ class MainScene extends Phaser.Scene {
             bgColor: 0x444444, 
             onClick: (obj) => console.log(`ImgObj clicked: ID ${obj.id}`)
         });
-        
+
         menu.addItemOver(TextObj, { 
             parentMenu: 'Menu 4', 
             text: 'Content Text for Menu 4...',
+            bgColor: 0x444444, 
+            onClick: (obj) => console.log(`TextObj clicked: ID ${obj.id}`)
+        });
+
+        menu.addItemOver(TextObj, { 
+            parentMenu: 'Menu 3', 
+            text: 'Content Text for Menu 3...',
             bgColor: 0x444444, 
             onClick: (obj) => console.log(`TextObj clicked: ID ${obj.id}`)
         });
